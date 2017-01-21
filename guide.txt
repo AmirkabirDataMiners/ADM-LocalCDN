@@ -1,9 +1,1 @@
-npm install -g nodemon
-npm i express-subdomain --save
-
-npm install vhost
-npm install connect
-npm install serve-static
-npm install --save jsonfile
-npm install uglify-js -g
-
+Say HI from .1.122
