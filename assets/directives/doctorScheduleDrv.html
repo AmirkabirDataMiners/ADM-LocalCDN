@@ -1,0 +1,117 @@
+<table class="table table-hover gray table-bordered bottomOnly headerRight blockInput topVertical">
+    <thead>
+        <tr>
+            <th style="width: 45px; max-width: 45px;">
+                ردیف
+            </th>
+            <th style="min-width: 150px;" ng-repeat="td in obj.template">
+                {{td.title}}
+            </th>
+            <th style="width: 60px; max-width: 60px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in data" ng-style="{color: !item.edit&&!item.id?'#00b300':'', height: (37 + (item.doctorAbsences.length?15:0) + (item.doctorAbsences.length||0) * 25) + 'px'}" ng-include="(item.edit)?'doctorSchedule_editMode.html':'doctorSchedule_viewMode.html'"></tr>
+        <tr ng-include="'doctorSchedule_editMode.html'" ng-if="!(data.length >= obj.limit)"></tr>
+    </tbody>
+
+    <script type="text/ng-template" id="doctorSchedule_viewMode.html">
+        <td>{{$index+1}}</td>
+        <td ng-repeat="td in obj.template" ng-click="editRow(item)" ng-class="{{td.exClass}}">
+            <div template="{{td.label}}"></div>
+        </td>
+        <td style="z-index: 10;" class="center">
+            <button class="btn btn-xs btn-warning noText border" ng-if="item.id" ng-click="addAbsence(item, $index)">
+                <i class="fa fa-power-off"></i>
+            </button>
+            <button class="btn btn-xs btn-primary noText border" ng-if="!item.cantEdit && !obj.deleteOnly" ng-click="editRow(item)">
+                <i class="fa fa-pencil-square-o"></i>
+            </button>
+            <button class="btn btn-xs btn-danger noText border" ng-if="!item.cantEdit" ng-click="removeRow(item, $index)">
+                <i class="fa fa-trash-o"></i>
+            </button>
+        </td>
+        <td class="absence">
+            <ul>
+                <li ng-repeat="i in item.doctorAbsences">
+                    <i class="fa fa-caret-left"></i>
+                    غیبت در روز 
+                    &nbsp;&nbsp; {{i.pDate}} &nbsp;&nbsp; 
+                    از ساعت 
+                    &nbsp;&nbsp; {{i.startTime}} &nbsp;&nbsp;
+                    تا 
+                    &nbsp;&nbsp; {{i.endTime}} &nbsp;&nbsp;&nbsp;
+                    <button class="btn btn-xs btn-danger noText btn-danger-outline" ng-click="removeAbsence(item, i, $index)">
+                        <i class="fa fa-times"></i>
+                    </button>
+                </li>
+            </ul>
+        </td>
+    </script>
+
+    <script type="text/ng-template" id="doctorSchedule_editMode.html">
+        <td>{{item.edit?$index+1:''}}</td>
+        <td ng-repeat="td in obj.template" ng-class="{{td.exClass}}">
+            <div template="{{td.element}}"></div>
+        </td>
+        <td ng-if="!item.edit" class="center">
+            <button class="btn btn-sm btn-success noText border" ng-click="insertRow(item)">
+                <i class="fa fa-plus"></i>
+            </button>
+        </td>
+        <td ng-if="item.edit">
+            <button class="btn btn-xs btn-success noText border" ng-click="editRowDone(item)">
+                <i class="fa fa-check"></i>
+            </button>
+            <button class="btn btn-xs btn-danger noText border" ng-click="editRowCancel(item)">
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+    </script>
+
+    <script type="text/ng-template" id="addAbsence.html">
+        <div class="modal-header">
+            <h3 class="modal-title">
+                <i class="fa fa-power-off"></i>
+                افزودن غیبت
+            </h3>
+        </div>
+        <div class="modal-body">
+
+            <table class="table table-hover table-bordered relCenter" style="width: 656px;">
+                <thead>
+                    <tr>
+                        <th style="width: 210px; min-width: 210px;">
+                            روز
+                        </th>
+                        <th>
+                            از ساعت
+                        </th>
+                        <th>
+                            تا ساعت
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="center">
+                            <adm-dtp ng-model="item.pDate" full-data="ctrl.fullDate" options="{format:'YYYY/MM/DD', disabled:['!i+'+ctrl.dis]}"></adm-dtp>
+                        </td>
+                        <td class="center">
+                            <time-picker ng-model="item.startTime"></time-picker>
+                        </td>
+                        <td class="center">
+                            <time-picker ng-model="item.endTime"></time-picker>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success border" type="button" ng-click="ok()">افزودن</button>
+            <button class="btn btn-warning border" type="button" ng-click="cancel()">انصراف</button>
+        </div>
+    </script>
+            
+</table>

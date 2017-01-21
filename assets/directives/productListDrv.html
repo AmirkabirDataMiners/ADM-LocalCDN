@@ -1,0 +1,24 @@
+<div class="productList">
+   <header>{{name}}</header>
+    <div class="listContainer">
+        <div class="item" ng-repeat="row in drv.images" ng-class="{current: $index==drv.step}" ng-style="{'margin-top': !$index?-282*drv.step:''}">
+            <div ng-repeat="item in row track by $index">
+                <div class="transSelect fileUploaderThumb" ng-class="{active: item.src == slide.selected}" ng-click="slide.selected = item.src">
+                    <img ng-src="{{item.src}}" alt="">
+                </div>
+                <header>
+                    <span class="name">محصول شگفت انگیز شماره {{$index}}</span>
+                    <span class="price">250,000 تومان</span>
+                </header>
+                <div ng-if="item.isNew" class="pinBadge small">
+                    <span>جدید</span>
+                </div>
+                <div ng-if="item.inAuction" class="flag auction small">
+                    <span>حراج 50% تابستانه</span>
+                </div>
+            </div>
+        </div>
+        <i class="fa fa-chevron-up" ng-class="{disable: drv.step==0}" ng-click="drv.moreImages(-1)"></i>
+        <i class="fa fa-chevron-down" ng-class="{disable: drv.step==drv.images.length-1}" ng-click="drv.moreImages(1)"></i>
+    </div>
+</div>

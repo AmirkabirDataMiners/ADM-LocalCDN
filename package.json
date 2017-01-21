@@ -1,0 +1,19 @@
+{
+    "name": "adm-cdn",
+    "version": "1.0.1",
+    "description": "Local ADM CDN",
+    "main": "server.js",
+    "author": "ADM | Amirkabir Data Miners <info@adm-co.net>",
+    "license": "MIT",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/AmirkabirDataMiners/ADM-LocalCDN.git"
+    },
+    "dependencies": {
+        "connect": "",
+        "uglify-js": "",
+        "destroy": "",
+        "on-finished": "",
+        "body-parser": ""
+    }
+}

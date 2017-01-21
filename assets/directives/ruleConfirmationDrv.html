@@ -1,0 +1,52 @@
+﻿<table class="table table-hover table-bordered bottomOnly headerRight blockInput inlineEditFormDrv">
+    <thead>
+        <tr>
+            <th>
+                ردیف
+            </th>
+            <th style="min-width: 150px;" ng-repeat="td in obj.template">
+                {{td.title}}
+            </th>
+            <th style="min-width: 98px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in data" ng-include="(item.edit)?'ruleConfirmation_editMode.html':'ruleConfirmation_viewMode.html'"></tr>
+        <tr ng-include="'ruleConfirmation_editMode.html'" ng-if="!(data.length >= obj.limit)"></tr>
+        <tr ng-repeat="item in last" ng-include="'ruleConfirmation_viewMode.html'"></tr>
+    </tbody>
+
+    <script type="text/ng-template" id="ruleConfirmation_viewMode.html">
+        <td>{{(item.end?data.length+1:$index+1)}}</td>
+        <td ng-repeat="td in obj.template" ng-class="{{td.exClass}}">
+            <div template="{{td.label}}"></div>
+        </td>
+        <td>
+            <button class="btn btn-sm btn-danger noText" ng-if="$index == data.length-1 && !item.cantEdit" ng-click="removeRow($index)">
+                <i class="fa fa-trash-o"></i>
+            </button>
+        </td>
+    </script>
+
+    <script type="text/ng-template" id="ruleConfirmation_editMode.html">
+        <td>{{item.edit?$index+1:''}}</td>
+        <td ng-repeat="td in obj.template" ng-class="{{td.exClass}}">
+            <div template="{{td.element}}"></div>
+        </td>
+        <td ng-if="!item.edit">
+            <button class="btn btn-sm btn-success noText" ng-click="insertRow(item)">
+                <i class="fa fa-plus"></i>
+            </button>
+        </td>
+        <td ng-if="item.edit">
+            <button class="btn btn-sm btn-success noText" ng-click="editRowDone(item)">
+                <i class="fa fa-check"></i>
+            </button>
+            <button class="btn btn-sm btn-danger noText" ng-click="editRowCancel(item)">
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+
+
+    </script>
+</table>

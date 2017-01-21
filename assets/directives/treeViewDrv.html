@@ -1,0 +1,26 @@
+﻿<ul class="ADMtreeview">
+    {{child[$lvl]}}
+    <li ng-repeat="item in data" ng-init="$lvl = -1">
+        <label ng-init="checkBoxInit(item, $lvl)">
+            <input ng-if="hasChild(item, $lvl)" type="checkbox" ng-model="item.childMark" ng-change="changeStat(item, $lvl)" ng-mouseenter="item.hover = true" ng-mouseleave="item.hover = false" ng-checked="item.totalChilds && item.totalChildsMark == item.totalChilds" />
+            <input ng-show="!hasChild(item, $lvl)" type="checkbox" checklist-value="item[targetParam]" checklist-model="total" checklist-change="targetChanged(item, $lvl)" />
+            {{item.name}}
+        </label>
+        <div ng-include src="'treeViewInnerTemplate.html'" ng-class="{open: item.childVisibility, hover: item.hover}"></div>
+    </li>
+</ul>
+
+<script type="text/ng-template" id="treeViewInnerTemplate.html">
+    <span ng-init="$lvl = nextLvl($lvl)"></span>
+    <i class="fa fa-caret-left menuToggleIcon" ng-if="item[child[$lvl]].length" ng-click="item.childVisibility = !item.childVisibility"></i>
+    <ul ng-if="item[child[$lvl]].length" ng-show="item.childVisibility" ng-init="$tmp = item">
+        <li ng-repeat="item in item[child[$lvl]]">
+            <label ng-init="pushParentIdx(item, $tmp.parentsIdx, $parent.$index, $tmp); checkBoxInit(item, $lvl);">
+                <input ng-if="hasChild(item, $lvl)" type="checkbox" ng-model="item.childMark" ng-change="changeStat(item, $lvl)" ng-mouseenter="item.hover = true" ng-mouseleave="item.hover = false" />
+                <input ng-show="!hasChild(item, $lvl)" type="checkbox" checklist-value="item[targetParam]" checklist-model="total" checklist-change="targetChanged(item, $lvl)" />
+                {{item.name}}
+            </label>
+            <div ng-include src="'treeViewInnerTemplate.html'" ng-class="{open: item.childVisibility, hover: item.hover}"></div>
+        </li>
+    </ul>
+</script>

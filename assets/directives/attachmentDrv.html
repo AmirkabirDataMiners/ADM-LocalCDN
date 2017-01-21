@@ -1,0 +1,117 @@
+<div class="row" ng-hide="flagForHide" nv-file-drop nv-file-over uploader="ctrl.uploader" style="font-family: Yekan">
+    <div class="col-md-3" ng-if="false">
+        <h3>Select files</h3>
+        <div ng-show="ctrl.uploader.isHTML5">
+            <!-- 3. nv-file-over uploader="link" over-class="className" -->
+            <div class="well my-drop-zone" nv-file-drop uploader="ctrl.uploader">
+                Base drop zone
+            </div>
+            <!-- Example: nv-file-drop="" uploader="{Object}" options="{Object}" filters="{String}" -->
+            <!--<div nv-file-drop="" uploader="ctrl.uploader" options="{ url: '/foo' }">
+            <div nv-file-over="" uploader="ctrl.uploader" over-class="another-file-over-class" class="well my-drop-zone">
+            Another drop zone with its own settings
+            </div>
+            </div>-->
+
+        </div>
+
+        <!-- Example: nv-file-select="" uploader="{Object}" options="{Object}" filters="{String}" -->
+        <input type="file" nv-file-select="" uploader="ctrl.uploader" multiple />
+        <br />
+    </div>
+    <div class="col-md-12" style="margin-bottom: 40px; margin-top: 1em;">
+        <!--<h2>Uploads </h2>
+        <h3>The queue</h3>-->
+        <!--<p>Queue length: {{ ctrl.uploader.queue.length }}</p>-->
+        
+        <div class="tableContainer">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th width="40%">نام فایل</th>
+                        <th ng-show="ctrl.uploader.isHTML5">حجم فایل</th>
+                        <th ng-show="ctrl.uploader.isHTML5">میزان پیشرفت</th>
+                        <th width="75px;">وضعیت</th>
+                        <th width="83px;">عملیات</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in ctrl.uploader.queue">
+                        <td>
+                            <strong class="en absCenter" dir="ltr">{{ item.file.name }}</strong>
+                            <!-- Image preview -->
+                            <!--auto height-->
+                            <!--<div ng-thumb="{ file: item.file, width: 100 }"></div>-->
+                            <!--auto width-->
+                            <div class="fileUploaderThumb" ng-show="ctrl.uploader.isHTML5" ng-thumb="{ file: item._file, width: 100, height: 100 }"></div>
+                            <!--fixed width and height -->
+                            <!--<div ng-thumb="{ file: item.file, width: 100, height: 100 }"></div>-->
+                        </td>
+                        <td ng-show="ctrl.uploader.isHTML5" nowrap class="center en" dir="ltr">{{ item.file.size/1024/1024|number:2 }} MB</td>
+                        <td ng-show="ctrl.uploader.isHTML5">
+                            <uib-progressbar class="progress-striped active" value="item.progress || 0" type="success" style="position: relative; margin-bottom: 0;"><i class="absCenter">{{(item.progress || 0) + '%'}}</i></uib-progressbar>
+                        </td>
+                        <td class="center">
+                            <span ng-show="item.isSuccess" class="noText"><i class="fa fa-check success"></i></span>
+                            <span ng-show="item.isCancel" class="noText"><i class="fa fa-chain-broken warning"></i></span>
+                            <span ng-show="item.isError" class="noText"><i class="fa fa-exclamation-circle danger"></i></span>
+                        </td>
+                        <td nowrap>
+                            <button type="button" class="btn btn-success btn-xs btn-success-outline noText" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess || !ctrl.uploader.url">
+                                <i class="fa fa-upload"></i>
+                            </button>
+                            <button type="button" class="btn btn-warning btn-xs btn-warning-outline noText" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                                <i class="fa fa-ban"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger btn-xs btn-danger-outline noText" ng-click="item.remove()">
+                                <i class="fa fa-trash-o"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h4 class="relCenter center" style="margin: 2em 0;" ng-if="!ctrl.uploader.queue.length">
+            دکمه انتخاب فایل را بزنید یا فایل ها را به داخل این پنجره بکشید
+        </h4>
+    </div>
+
+    <div class="modal-footer" style="text-align: right">
+        <div>
+            <p>میزان پیشرفت آپلود فایل ها:</p>
+            <uib-progressbar class="progress-striped active" value="ctrl.uploader.progress || 0" type="success" style="position: relative;"><i class="absCenter">{{(ctrl.uploader.progress || 0) + '%'}}</i></uib-progressbar>
+
+            <!--<div class="progress" style="">
+                <div class="progress-bar" role="progressbar" ng-style="{ 'width': ctrl.uploader.progress + '%' }"></div>
+            </div>-->
+        </div>
+        <br/>
+        <label class="inlineRadio" style="width: 200px; vertical-align: bottom; margin: 0; margin-right: 1em;">
+            تاریخ اولین ویزیت
+            <adm-dtp ng-model="patient.pFirstVisitDate" full-data="ctrl.firstVisitDate" options="{default: 'today'}" on-change="firstVisitDateChanged(date)"></adm-dtp>
+        </label>
+        <span style="padding: 0 1em;">|</span>
+        <button type="button" class="btn btn-primary btn-primary-outline btn-s" style="padding: 0">
+            <label style="margin: 0; cursor: pointer; padding: 6px 12px;">
+                انتخاب فایل
+                <input type="file" nv-file-select="" uploader="ctrl.uploader" multiple style="display: none" />
+            </label>
+        </button>
+        <button type="button" class="btn btn-success  btn-success-outline btn-s" ng-click="ctrl.uploader.uploadAll()" ng-disabled="!ctrl.uploader.getNotUploadedItems().length || !ctrl.uploader.url">
+            <i class="fa fa-upload"></i> بارگذاری همه
+        </button>
+        <button type="button" class="btn btn-warning btn-warning-outline btn-s" ng-click="ctrl.uploader.cancelAll()" ng-disabled="!ctrl.uploader.isUploading">
+            <i class="fa fa-ban"></i> متوقف کردن همه
+        </button>
+        <button type="button" class="btn btn-danger btn-danger-outline btn-s" ng-click="ctrl.uploader.clearQueue()" ng-disabled="!ctrl.uploader.queue.length">
+            <i class="fa fa-trash-o"></i> حذف همه
+        </button>
+        <button type="button" class="btn btn-primary btn-primary-outline btn-s" ng-click="cancel()">
+            <i class="fa fa-times"></i> بستن
+        </button>
+        <br/>
+        <br/> 
+    </div>
+
+    <!--<button type="button"  ng-click=" close()">close</button>-->
+</div>

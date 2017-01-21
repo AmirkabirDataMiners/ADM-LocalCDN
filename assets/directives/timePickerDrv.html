@@ -1,0 +1,28 @@
+<div class="nuTimepickerContainer relCenter" click-out="close()">
+    <md-button md-theme="pink" class="md-raised md-primary radius" ng-click="open()"><i class="material-icons">{{icon || 'schedule'}}</i> &nbsp; {{model.h | zero}}:{{model.m | zero}} &nbsp; {{model.am?'ق.ظ':'ب.ظ'}} &nbsp;</md-button>
+    <div class="nuTimepicker" ng-show="ctrl.isOpen">
+        <div class="split s2-1">
+            <div class="preview">
+                <div class="time">
+                    <span ng-class="{active: ctrl.onHour}" ng-click="ctrl.onHour=true">{{model.h | zero}}</span> : <span ng-class="{active: !ctrl.onHour}" ng-click="ctrl.onHour=false">{{model.m | zero}}</span>
+                </div>
+                <div class="type">
+                    <span ng-class="{active: model.am}" ng-click="model.am=true; update();">ق.ظ</span><br/>
+                    <span ng-class="{active: !model.am}" ng-click="model.am=false; update();">ب.ظ</span>
+                </div>
+            </div>
+            <div class="picker">
+                <div class="minute" ng-show="!ctrl.onHour">
+                    <span class="leaf" ng-repeat="i in ctrl.minutes" ng-class="{active: model.m==i}" ng-click="model.m=i; update(); ctrl.isOpen=false;">{{i}}</span>
+                    <span class="back"></span>
+                    <span class="dot"></span>
+                </div>
+                <div class="hour" ng-show="ctrl.onHour">
+                    <span class="leaf" ng-repeat="i in ctrl.hours" ng-class="{active: model.h==i}" ng-click="model.h=i; update(); ctrl.onHour=false;">{{i}}</span>
+                    <span class="back"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,74 @@
+{
+    "services": {
+        "name": "services",
+        "regex": "Srv$",
+        "path": "/assets/services/",
+        "type": ".js"
+    },
+    "directives": {
+        "name": "directives",
+        "regex": "Drv$",
+        "path": "/assets/directives/",
+        "type": ".js"
+    },
+    "filters": {
+        "name": "filters",
+        "regex": "Flt$",
+        "path": "/assets/filters/",
+        "type": ".js"
+    },
+    "configs": {
+        "name": "configs",
+        "regex": "-CF$",
+        "path": "/assets/configs/",
+        "type": ".js"
+    },
+    "configsJS": {
+        "name": "configs",
+        "regex": "-CF.js$",
+        "path": "/assets/configs/",
+        "type": ""
+    },
+    "directivesView": {
+        "name": "directivesView",
+        "regex": "Drv.html$",
+        "path": "/assets/directives/",
+        "type": ""
+    },
+    "scripts": {
+        "name": "scripts",
+        "regex": ".js$",
+        "path": "/assets/scripts/",
+        "type": ""
+    },
+    "views": {
+        "name": "views",
+        "regex": ".html$",
+        "path": "/assets/views/",
+        "type": ""
+    },
+    "stylesheets": {
+        "name": "stylesheets",
+        "regex": ".css$",
+        "path": "/assets/stylesheets/",
+        "type": ""
+    },
+    "fonts": {
+        "name": "fonts",
+        "regex": "(.ttf|.woff|.woff2)$",
+        "path": "/assets/fonts/",
+        "type": ""
+    },
+    "pics": {
+        "name": "pics",
+        "regex": "(.jpg|.jpeg|.svg|.png|.gif)$",
+        "path": "/assets/pics/",
+        "type": ""
+    },
+    "general": {
+        "name": "general",
+        "regex": "",
+        "path": "/assets/general/",
+        "type": ""
+    }
+}

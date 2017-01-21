@@ -1,0 +1,41 @@
+﻿<div ng-show="vm.confirm.show" class="raven-asks" ng-class="vm.confirm.css">
+    <div class="raven-backface"></div>
+    <ul>
+        <li ng-if="vm.confirm.show">
+            <h2 ng-bind-html="vm.confirm.title | sce"></h2>
+
+            <div class="raven-question">
+                <span ng-bind-html="vm.confirm.textContent | sce"></span>
+            </div>
+            <hr class="thin dashed light" />
+            <md-dialog-actions>
+                <md-button class="notif-confirmDismiss" ng-click="vm.confirm.dismiss()" aria-label="dismiss" class="md-primary md-cancel-button">
+                    <span ng-bind-html="vm.confirm.cancel | sce"></span>
+                </md-button>
+                <md-button class="notif-confirmOk" ng-click="vm.confirm.confirm()" aria-label="confirm" class="md-primary md-confirm-button">
+                    <span ng-bind-html="vm.confirm.ok | sce"></span>
+                </md-button>
+            </md-dialog-actions>
+        </li>
+    </ul>
+</div>
+<div class="raven">
+    <ul>
+        <li class="{{item.type}}" ng-repeat="item in vm.notifs" ng-init="startTimer(item, $parent)">
+            <h4 ng-if="item.title">
+                {{item.title}}
+            </h4>
+            <div class="raven-message">
+                <div ng-if="item.icon!==''" class="icon">
+                    <i class="material-icons">{{item.icon}}</i>
+                </div>
+                <span ng-if="!item.compile" ng-bind-html="item.message | sce"></span>
+                <span ng-if="item.compile" template="{{item.message}}"></span>
+            </div>
+            <i class="material-icons notif-dismiss" ng-click="dismiss(item)">clear</i>
+            <i class="material-icons notif-timer" ng-class="{off: item.sticky}" ng-click="toggleSticky(item)">{{item.sticky?'timer_off':'timer'}}</i>
+            <i class="material-icons notif-dismissAll" ng-click="dismissAll()">power_settings_new</i>
+        </li>
+    </ul>
+</div>
+

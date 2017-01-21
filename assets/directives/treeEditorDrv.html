@@ -1,0 +1,61 @@
+﻿<div class="treeEditor relCenter" ng-if="ctrl.model" ng-class="{notEditable: ctrl.readOnly}" ng-init="$depth = 0; $item={};">
+    <ul class="te-ui sRepeatAnim enterOnly">
+        <p class="te-empty main" ng-class="{active: !ctrl.model.length}">
+            <i class="material-icons noI">error</i> موردی وجود ندارد!
+        </p>
+
+        <li ng-init="$depth = $parent.$depth && $parent.$depth + 1 || 1; $open=false; $item.add=false;"
+            ng-repeat="node in ctrl.model track by $index"
+            ng-include="'treeEditorChild.html'"></li>
+
+        <div class="te-add" ng-show="$depth < options.maxDepth">
+            <md-button md-theme="green" class="relCenter md-mini md-raised md-primary radius lineHeight" ng-show="!$item.add && !options.singleRoot" ng-click="$item.add = true">
+                <i class="material-icons noI">add</i>
+                افزودن
+            </md-button>
+            <div class="add" ng-show="$item.add">
+                <input type="text" placeholder="نام ..." focusme="{{$item.add}}" ng-model="$item.newItem" ng-enter="add(ctrl.model, $item, $parent);" />
+                <i class="material-icons success" ng-click="add(ctrl.model, $item, $parent);">check</i>
+                <i class="material-icons" ng-click="$item.newItem=''; $item.add=false;">clear</i>
+            </div>
+        </div>
+    </ul>
+</div>
+
+<script type="text/ng-template" id="treeEditorChild.html">
+    <div class="te-header" ng-click="(!$item.edit && canBeOpen(node, $depth)?$open=!$open:kidOpen(node, $item))">
+        <span dir="rtl" ng-show="options.selectable" style="cursor: pointer;">
+            <md-checkbox ng-checked="exists(node)" ng-click="toggle(node, $event)">
+                {{grabTitle(node)}}
+            </md-checkbox>
+        </span>
+        <span ng-show="!$item.edit && !options.selectable">{{grabTitle(node)}}</span>
+        <span ng-show="$item.edit" class="edit" ng-init="">
+            <i class="material-icons success" ng-click="edit(node, $item, $parent.$parent, $index);">check</i>
+            <i class="material-icons" ng-click="$item.editItem=''; $item.edit=false;">clear</i>
+            <input type="text" placeholder="نام ..." focusme="{{$item.add}}" ng-model="$item.editItem" ng-enter="edit(node, $item, $parent.$parent, $index);" />
+        </span>
+    </div>
+    <div class="te-toolbar" ng-init="initItem(node); $item={};" id="te-node-{{node.id}}">
+        <i class="material-icons" ng-class="{deg90: $open}" ng-show="canBeOpen(node, $depth)" ng-click="$open=!$open">chevron_right</i>
+        <i class="material-icons" ng-hide="$item.edit || $depth==1 && options.singleRoot" ng-click="$item.edit = true; $item.editItem = grabTitle(node);">mode_edit</i>
+        <i class="material-icons" ng-hide="$depth==1 && options.singleRoot" ng-click="$open = false; delete($parent, $event);">delete</i>
+        <i class="material-icons success" ng-show="!$item.add && depthValid($depth)" ng-click="$item.add = true; $open = true;">add</i>
+    </div>
+    <div class="te-kidContent" ng-show="$item.kidContent || $item.kidContentLoading" loading="{{$item.kidContentLoading}}" small>
+        <div class="anim enterOnly" ng-if="$item.kidContent" template="{{$item.kidContent}}"></div>
+    </div>
+    <p class="te-empty" ng-class="{active: $open && (!node[$chn] || !node[$chn].length)}"><i class="material-icons noI">error</i> موردی وجود ندارد!</p>
+    <ul class="te-ui sRepeatAnim enterOnly" ng-if="$open && node[$chn]">
+        <li ng-init="$depth = $parent.$depth && $parent.$depth + 1 || 1; $open=false;"
+            ng-repeat="node in node[$chn] track by $index"
+            ng-include="'treeEditorChild.html'"></li>
+    </ul>
+    <div class="te-add" ng-show="$open && $item.add">
+        <div class="add">
+            <input type="text" placeholder="نام ..." focusme="{{$item.add}}" ng-model="$item.newItem" ng-enter="add(node[$chn], $item, $parent);" />
+            <i class="material-icons success" ng-click="add(node[$chn], $item, $parent);">check</i>
+            <i class="material-icons" ng-click="$item.newItem=''; $item.add=false;">clear</i>
+        </div>
+    </div>
+</script>

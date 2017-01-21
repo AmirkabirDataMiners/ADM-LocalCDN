@@ -1,0 +1,54 @@
+<table class="table table-hover gray table-bordered bottomOnly headerRight blockInput">
+    <thead>
+        <tr>
+            <th style="width: 45px; max-width: 45px;">
+                ردیف
+            </th>
+            <th style="min-width: 150px;" ng-repeat="td in obj.template">
+                {{td.title}}
+            </th>
+            <th style="width: 60px; max-width: 60px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="item in data" ng-include="(item.edit)?'editableForm_editMode.html':'editableForm_viewMode.html'"></tr>
+        <tr ng-include="'editableForm_editMode.html'" ng-if="!(data.length >= obj.limit)"></tr>
+    </tbody>
+
+    <script type="text/ng-template" id="editableForm_viewMode.html">
+        <td>{{$index+1}}</td>
+        <td ng-repeat="td in obj.template" ng-click="editRow(item)" ng-class="{{td.exClass}}">
+            <div template="{{td.label}}"></div>
+        </td>
+        <td>
+            <button class="btn btn-xs btn-primary noText border" ng-if="!item.cantEdit && !obj.deleteOnly" ng-click="editRow(item)">
+                <i class="fa fa-pencil-square-o"></i>
+            </button>
+            <button class="btn btn-xs btn-danger noText border" ng-if="!item.cantEdit" ng-class="{relCenter: obj.deleteOnly}" ng-click="removeRow($index)">
+                <i class="fa fa-trash-o"></i>
+            </button>
+        </td>
+    </script>
+
+    <script type="text/ng-template" id="editableForm_editMode.html">
+        <td>{{item.edit?$index+1:''}}</td>
+        <td ng-repeat="td in obj.template" ng-class="{{td.exClass}}">
+            <div template="{{td.element}}"></div>
+        </td>
+        <td ng-if="!item.edit">
+            <button class="btn btn-sm btn-success relCenter noText border" ng-click="insertRow(item)">
+                <i class="fa fa-plus"></i>
+            </button>
+        </td>
+        <td ng-if="item.edit">
+            <button class="btn btn-xs btn-success noText border" ng-click="editRowDone(item)">
+                <i class="fa fa-check"></i>
+            </button>
+            <button class="btn btn-xs btn-danger noText border" ng-click="editRowCancel(item)">
+                <i class="fa fa-times"></i>
+            </button>
+        </td>
+
+
+    </script>
+</table>

@@ -1,0 +1,41 @@
+﻿@charset "UTF-8";
+
+@import "compass/CSS3";
+@import "ceaser-easing";
+
+@import "variables";
+
+.repeatAnim {
+    @for $i from 0 through 100 {
+        > *.ng-move,
+        > *.ng-enter,
+        > *.ng-leave {
+            &:nth-child(#{$i+1}) {
+                @include transform-origin(50%, 0);
+                @include transition(unquote("all .5s #{$i * .05}s #{$ease}"));
+            }
+        }
+    }
+
+    > *.ng-move,
+    > *.ng-enter,
+    > *.ng-leave {
+        @include transition(all .3s $ease);
+    }
+
+    > *.ng-leave.ng-leave-active,
+    > *.ng-move,
+    > *.ng-enter {
+        opacity: 0;
+        //@include scale(.5);
+        @include vtrans(scale(.5) rotateZ(-10deg));
+    }
+
+    > *.ng-leave,
+    > *.ng-move.ng-move-active,
+    > *.ng-enter.ng-enter-active {
+        opacity: 1;
+        //@include scale(1);
+        @include vtrans(scale(1) rotateZ(0));
+    }
+}

@@ -1,0 +1,1 @@
+nodemon --ignore assets/ --ignore packages/ --ignore configs/ server.js

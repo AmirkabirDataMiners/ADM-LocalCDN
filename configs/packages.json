@@ -1,0 +1,27 @@
+{
+  "1447593382": {
+    "jquery-2.2.3.min.js": "1.0",
+    "angular.min.js": "1.5",
+    "angular-route.min.js": "1.0",
+    "angular-animate.min.js": "1.0",
+    "angular-aria.min.js": "1.0",
+    "angular-messages.min.js": "1.0",
+    "AngularMaterial 1.1.0-rc.5/angular-material.min.js": "1.0",
+    "underscore.min.js": "1.0",
+    "customScript/ADM-dateTimePicker.js": "1.8",
+    "customScript/jquery.scrollTo.min.js": "1.0"
+  },
+  "1945210922": {
+    "jquery-2.2.3.min.js": "1.0",
+    "angular.min.js": "1.5",
+    "angular-route.min.js": "1.0",
+    "angular-animate.min.js": "1.0",
+    "angular-aria.min.js": "1.0",
+    "angular-messages.min.js": "1.0",
+    "AngularMaterial/angular-material.js": "1.0",
+    "underscore.min.js": "1.0",
+    "customScript/ADM-dateTimePicker.js": "1.8",
+    "customScript/jquery.scrollTo.min.js": "1.0",
+    "ADMtrvDrv": "1.6"
+  }
+}

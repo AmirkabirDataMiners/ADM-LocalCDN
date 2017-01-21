@@ -1,0 +1,50 @@
+﻿<div class="sidebarChild sidebar-news" loading="{{!lastNews}}">
+
+    <div class="anim" ng-if="lastNews">
+        <a class="md-headline justify" ng-href="/news/{{lastNews.id}}">{{::lastNews.title}}</a>
+        <br/>
+        <span class="md-subhead gray"><i class="material-icons pink">today</i> {{::lastNews.dayName}} - {{::lastNews.pPublishDate}}</span>
+        <p class="justify">
+            {{::lastNews.abstract}}
+        </p>
+
+        <md-button class="allNews gray relCenter" ng-href="/news" aria-label="آرشیو اخبار">
+            <i class="material-icons pink">toc</i> آرشیو اخبار
+        </md-button>
+    </div>
+
+    <div class="flag auction" style="left: -7px;">
+        <span><i class="material-icons">art_track</i>&nbsp; آخرین خبر</span>
+    </div>
+</div>
+
+<div class="sidebarChild">
+    <span class="md-headline justify">تازه ترین بخش ها</span>
+    <ul class="pinkBullet">
+        <li><a href="/contacts">دفترچه تلفن بیمارستان</a></li>
+    </ul>
+    <div class="flag auction" style="left: -7px; top: 12px;">
+        <span><i class="material-icons" style="font-size: 1.5em;">new_releases</i>&nbsp; تاره ترین ها</span>
+    </div>
+</div>
+
+<div class="sidebarChild sidebar-survey sRepeatAnim-self top-left" ng-repeat="item in $root.surveyQues">
+    <span class="md-headline justify">نظرسنجی {{$root.surveyQues.length==1?"":($index+1)}}</span>
+    <p class="center" ng-if="!item.questionsListToSurvey.length">سپاس از شرکت شما در نظرسنجی</p>
+
+    <ul ng-if="item.questionsListToSurvey.length">
+        <li ng-repeat="(qKey, q) in item.questionsListToSurvey" ng-if="$first">
+            {{q.title}}
+            <br />
+            <md-radio-group ng-model="q.picked" ng-change="surveyPicked(item, q, qKey)" dir="rtl">
+
+                <md-radio-button value="{{ans.id}}" ng-disabled="q.disable" ng-repeat="ans in q.questionsOptionListToSurvey">{{ans.title}}</md-radio-button>
+
+            </md-radio-group>
+        </li>
+    </ul>
+
+    <div class="flag auction" style="left: -7px; top: 12px;">
+        <span><i class="material-icons" style="font-size: 1.5em;">speaker_notes</i>&nbsp; نظرسنجی</span>
+    </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <i class="fa fa-picture-o"></i>
+        ویرایش تصویر
+    </h3>
+</div>
+<div class="modal-body imageEditorDrvBody">
+
+    <div class="toolsContainer" ng-style="{height:containerSize+30}">
+        <span ng-repeat="item in pagesInfo" ng-click="changePage(item)" ng-class="{active: item.id == page}">
+           <i class="fa" ng-class="item.icon"></i>
+       </span>
+    </div><!--
+--><div class="contentContainer">
+        <div class="cropPage" ng-style="{height:containerSize}" ng-class="{hidePage: page != pages.crop}">
+            <img-crop image="image" result-image="myCroppedImage" result-image-size="'max'" area-type="{{cropType}}" cropject="info" on-load-done="loadDone(0)" on-change="loadDone(1)"></img-crop>
+        </div>
+        <div class="filtersPage" ng-style="{height:containerSize}" ng-class="{hidePage: page != pages.filters}">
+            <div class="filtersContainer">
+                <ul>
+                    <li ng-repeat="item in filters" id="{{'filterThumb-'+item.id}}" ng-class="{rendering: item.rendering, selected: item.selected}" ng-click="applyFilter(item, $index)">
+                        <img id="{{'filterThumb-'+item.id+'-img'}}" alt="">
+                        <span>{{item.name}}</span>
+                    </li>
+                </ul>
+            </div>
+            <div id="filterPreviewContainer" class="imageContainer" ng-class="{rendring: rendering}">
+                <img id="filterPreview" class="img-thumbnail" ng-if="imageLoaded" ng-src="{{myCroppedImage}}" width="{{cropInfo.w}}" height="{{cropInfo.h}}" />
+            </div>
+        </div>
+        <div class="viewPage" ng-style="{height:containerSize}" ng-class="{hidePage: page != pages.view}">
+            <img class="img-thumbnail" ng-if="imageLoaded" ng-src="{{myCroppedImage}}" width="{{cropInfo.w}}" height="{{cropInfo.h}}" />
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-success" type="button" ng-click="ok()">ذخیره</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">انصراف</button>
+</div>

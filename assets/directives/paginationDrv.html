@@ -1,0 +1,13 @@
+﻿<div class="pagination" ng-if="ctrl.page!=-1 && total!=0">
+    <ul>
+        <li class="btn nuBtn" ng-class="{disable: ctrl.page==1}" ng-click="go(-1)"><i class="material-icons">keyboard_arrow_right</i></li>
+        <li ng-click="set(1)" ng-class="{active: ctrl.page==1}"><span class="btn nuBtn">1</span></li>
+        <li ng-if="ctrl.moreRight"><span>&hellip;</span></li>
+        <li ng-repeat="i in ctrl.pages track by $index" ng-click="set(i)" ng-class="{active: ctrl.page==i}">
+            <span class="btn nuBtn">{{i}}</span>
+        </li>
+        <li ng-if="ctrl.moreLeft"><span>&hellip;</span></li>
+        <li ng-click="set(total)" ng-class="{active: ctrl.page==total}" ng-if="total!=1"><span class="btn nuBtn">{{total}}</span></li>
+        <li class="btn nuBtn" ng-class="{disable: ctrl.page==total}" ng-click="go(1)"><i class="material-icons">keyboard_arrow_left</i></li>
+    </ul>
+</div>

@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <h3 class="modal-title">
+        <i class="fa fa-picture-o"></i>
+        ویرایش تصویر
+    </h3>
+</div>
+<div class="modal-body imageEditorDrvBody" style="min-height: 50vh;">
+
+    <div class="contentContainer" ng-style="{height:containerSize+30, width:'100%'}">
+        <div class="cropPage" ng-style="{height:containerSize}">
+            <img-crop image="image" result-image="myCroppedImage" result-image-size="'max'" area-type="{{cropType}}" cropject="info" on-load-done="loadDone(0)" on-change="loadDone(1)"></img-crop>
+        </div>
+    </div>
+
+</div>
+<div class="modal-footer">
+    <button class="btn btn-success" type="button" ng-click="ok()">ذخیره</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">انصراف</button>
+</div>

@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html ng-app="app">
+    <head>
+        <title>CDN ADMIN</title>
+        <script src="angular.min.js"></script>
+        
+        <style>
+            body {
+                font-family: sans-serif;
+            }
+        </style>
+        <style>body{font-family: monospace; background: #eee; color: gray; padding: 3em;} h1{font-size: 10em;} h2{font-size: 1.5em; margin: 0;} img{height: 57px; vertical-align: bottom;} p{font-size: 1.3em; border-left: 2px solid #ccc; padding: .7em; margin-left: 1em;}</style>
+        
+    </head>
+    <body ng-controller="bodyCtrl">
+        <h2><img src="logo.png" />|CDN</h2> <br><br><br>
+        
+        <h2>Versions:</h2>
+        <ul>
+            <li ng-repeat="(type, list) in versions">
+                <strong>{{type}}:</strong>
+                <ul>
+                    <li ng-repeat="(name, v) in list">
+                        {{name}} <input type="text" ng-model="versions[type][name]" ng-enter="updateVersions()"> <button ng-click="removeVresion(type, name)">X Remove</button>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <button ng-click="updateVersions()">Update</button> <br> <br>
+        
+        <select ng-options="i as i for i in getVersionList()" ng-model="ctrl.newVersion.type"></select> <input type="text" ng-model="ctrl.newVersion.name" placeholder="Name..."> <input type="text" ng-model="ctrl.newVersion.v" placeholder="Version..."> <button ng-click="addVersion()">ADD</button>
+        
+        <br>
+        <br>
+        <hr>
+        <br>
+        <br>
+        
+        <h2>Packages:</h2>
+        <ul>
+            <li ng-repeat="(p, list) in packages">
+                <strong>{{p}}:</strong> <button ng-click="removePackage(p)">X Remove</button>
+                <ul>
+                    <li ng-repeat="(name, v) in list">
+                        &nbsp;<span ng-bind-html="v | space:4 | sce"></span> {{name}}
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        
+        <br>
+        <hr>
+        <br>
+        
+        <h2>Main Configs:</h2>
+        <ul>
+            <li ng-repeat="(type, list) in configs">
+                <strong>{{type}}:</strong>
+                <ul>
+                    <li ng-repeat="(name, o) in list">
+                        <span ng-bind-html="name | space:5 | sce"></span> <input type="text" ng-model="o">
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <button ng-click="updateConfigs()">Update</button>
+        
+        <br>
+        <br>
+        <br>
+        <br>
+        
+        <script>
+            String.prototype.space = function (a) {
+                a = (Math.max(this.length, a || 2) - this.length) * 6 + this.length;
+                return (this + '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;').substring(0, a);
+            };
+            
+            var app = angular.module('app', [])
+            .filter('sce', ['$sce', function ($sce) {
+                return $sce.trustAsHtml;
+            }])
+            .filter('space', [function () {
+                return function (a, b) {
+                    return a.space(b);
+                }
+            }])
+            .directive('ngEnter', function() {
+                return function(scope, element, attrs) {
+                    element.bind("keydown keypress", function(event) {
+                        if (event.which === 13) {
+                            scope.$apply(function() {
+                                scope.$eval(attrs.ngEnter);
+                            });
+                            event.preventDefault();
+                        }
+                    });
+                };
+            })
+            .controller('bodyCtrl', ['$scope', '$http', function($scope, $http) {
+                $scope.ctrl = {
+                    newVersion: {}
+                }
+                
+                
+                $http.get('/api/getVersions').success(function(data) {
+                     $scope.versions = data;
+                 })
+                
+                $http.get('/api/getConfigs').success(function(data) {
+                     $scope.configs = data;
+                 })
+                
+                $http.get('/api/getPackages').success(function(data) {
+                     $scope.packages = data;
+                 })
+
+                
+                $scope.updateConfigs = function() {
+                    $http.post('/api/updateConfigs', $scope.configs).success(function(res) {
+                        if (res.err) {
+                            alert(res.err);
+                        }
+                    })
+                }
+
+                
+                $scope.removePackage = function(p) {
+                    delete $scope.packages[p];
+                    $http.post('/api/updatePackages', $scope.packages).success(function(res) {
+                        if (res.err) {
+                            alert(res.err);
+                        }
+                    })
+                }
+
+                
+                $scope.addVersion = function() {
+                    var version = angular.copy($scope.versions);
+                    var nuV = angular.copy($scope.ctrl.newVersion);
+                    version[nuV.type][nuV.name] = nuV.v;
+                    $http.post('/api/setVersion', version).success(function(res) {
+                        if (!res.err) {
+                            $scope.versions[nuV.type][nuV.name] = nuV.v;
+                            $scope.ctrl.newVersion = {};
+                        }
+                    })
+                }
+                $scope.updateVersions = function() {
+                    $http.post('/api/setVersion', $scope.versions).success(function(res) {
+                        if (res.err) {
+                            alert(res.err);
+                        }
+                    })
+                }
+                $scope.removeVresion = function(type, name) {
+                    delete $scope.versions[type][name];
+                    $scope.updateVersions();
+                }
+                $scope.getVersionList = function() {
+                    var list = [];
+                    for (var i in $scope.versions)
+                        list.push(i);
+                    return list;
+                }
+            }]);
+            
+        </script>
+        
+    </body>
+</html>

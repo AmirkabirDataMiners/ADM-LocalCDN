@@ -1,0 +1,21 @@
+{
+  "directives": {
+    "ADMtrvDrv": "1.6",
+    "ADMdtpDrv": "1.8"
+  },
+  "directivesView": {},
+  "services": {
+    "authSrv": "1.0"
+  },
+  "filters": {},
+  "configs": {},
+  "scripts": {
+    "angular.min.js": "1.5",
+    "customScript/ADM-dateTimePicker.js": "1.8"
+  },
+  "views": {},
+  "stylesheets": {},
+  "fonts": {},
+  "pics": {},
+  "general": {}
+}
